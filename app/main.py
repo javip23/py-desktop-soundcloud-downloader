@@ -1,4 +1,4 @@
-from configparser import ConfigParser, Error
+from configparser import Error
 import sys
 import os
 
@@ -8,14 +8,9 @@ from PyQt5.QtWidgets import QWidget, QMainWindow, QVBoxLayout
 from PyQt5.QtCore import QSize
 
 from widgets.urlListWidget import UrlListWidget
+from widgets.select_default_download_folder import SelectDefaultDownloadFolder
+
 from utils.alerts import show_error_alert
-
-cfg = ConfigParser()
-cfg.read('etc/config.ini')
-
-downloader = cfg.get('BASECONFIG','baseDownloader')
-
-
 
 iconSrc = (os.path.dirname(os.path.realpath(__file__))) + os.path.sep + 'src' + os.path.sep + 'img' + os.path.sep + 'logo.png'
 class MainWindow(QMainWindow):
@@ -23,14 +18,14 @@ class MainWindow(QMainWindow):
         QMainWindow.__init__(self)
 
         self.setWindowIcon(QtGui.QIcon(iconSrc))
-        self.setMinimumSize(QSize(690, 355))
-        self.setFixedSize(690, 355) 
+        self.setFixedSize(690, 435) 
         self.setWindowTitle("NSTK soundcloud downloader") 
 
         layout = QVBoxLayout()
 
         widgets = [
-            UrlListWidget
+            UrlListWidget,
+            SelectDefaultDownloadFolder
         ]
 
         for w in widgets:
