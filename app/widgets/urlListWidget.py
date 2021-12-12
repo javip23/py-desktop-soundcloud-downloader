@@ -1,6 +1,6 @@
 
 from PyQt5 import QtCore, QtWidgets, QtGui
-from PyQt5.Qt import QApplication
+from PyQt5.Qt import QApplication, QTextCursor
 from PyQt5.QtWidgets import  QWidget, QLabel, QPushButton, QPlainTextEdit, QVBoxLayout, QCheckBox
 from PyQt5.QtCore import  Qt
 
@@ -47,5 +47,14 @@ class UrlListWidget(QWidget):
         if self.auto_paste_from_clipboard.isChecked():
             if "soundcloud" in text and text not in self.url_list.toPlainText():
                 self.url_list.insertPlainText(text + "\n")
+        else:
+            urls_text = self.url_list.toPlainText()
+            cursor = self.url_list.textCursor()
+            cursor.movePosition(QTextCursor.End)
+            self.url_list.setTextCursor(cursor)
+            self.url_list.setTextCursor(cursor)
+            self.url_list.ensureCursorVisible() 
+            if urls_text and urls_text[len(urls_text) -1] != "\n":
+                self.url_list.insertPlainText("\n")
 
     
