@@ -1,4 +1,4 @@
-from configparser import ConfigParser
+from configparser import ConfigParser, Error
 import sys
 import os
 
@@ -8,6 +8,7 @@ from PyQt5.QtWidgets import QWidget, QMainWindow, QVBoxLayout
 from PyQt5.QtCore import QSize
 
 from widgets.urlListWidget import UrlListWidget
+from utils.alerts import show_error_alert
 
 cfg = ConfigParser()
 cfg.read('etc/config.ini')
@@ -53,10 +54,13 @@ stylesheet = """
 """
 
 if __name__ == "__main__":
-    app = QtWidgets.QApplication(sys.argv)
-    app.setWindowIcon((QtGui.QIcon(iconSrc)))
-    app.setStyleSheet(stylesheet)
-    mainWin = MainWindow()
-    mainWin.show()
-    sys.exit( app.exec_() )
+    try:
+        app = QtWidgets.QApplication(sys.argv)
+        app.setWindowIcon((QtGui.QIcon(iconSrc)))
+        app.setStyleSheet(stylesheet)
+        mainWin = MainWindow()
+        mainWin.show()
+        sys.exit( app.exec_() )
+    except Error:
+        show_error_alert(current_widget=mainWin,message="Ha ocurrido un error",submessage=Error.message )
 

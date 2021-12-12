@@ -1,8 +1,10 @@
 
 from PyQt5 import QtCore, QtWidgets, QtGui
 from PyQt5.Qt import QApplication, QTextCursor
-from PyQt5.QtWidgets import  QWidget, QLabel, QPushButton, QPlainTextEdit, QVBoxLayout, QCheckBox
+from PyQt5.QtWidgets import  QWidget, QLabel, QPushButton, QPlainTextEdit, QVBoxLayout, QCheckBox, QMessageBox
 from PyQt5.QtCore import  Qt
+
+from utils.alerts import show_warning_alert
 
 class UrlListWidget(QWidget):
     def __init__(self, *args, **kwargs):
@@ -35,6 +37,7 @@ class UrlListWidget(QWidget):
         download_button.setFixedSize(120,35)
         download_button.setStyleSheet('')
         self.download_button = download_button
+        self.download_button.clicked.connect(self.downloadList)
 
 
         self.layout.addWidget(url_list_textbox_label, alignment=Qt.AlignLeft)
@@ -56,5 +59,12 @@ class UrlListWidget(QWidget):
             self.url_list.ensureCursorVisible() 
             if urls_text and urls_text[len(urls_text) -1] != "\n":
                 self.url_list.insertPlainText("\n")
-
     
+    def downloadList(self):
+        list_text = self.url_list.toPlainText().strip()      
+        if len(list_text) > 0:
+            url_list = list_text.split("\n")
+            print(url_list)
+        else:
+            show_warning_alert(current_widget=self,message='No has añadido ningún enlace a la lista', submessage="Agrega al menos uno para comenzar la descarga")
+
